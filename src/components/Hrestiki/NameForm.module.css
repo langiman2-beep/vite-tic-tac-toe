@@ -1,0 +1,68 @@
+/* Главный контейнер формы */
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+/* Наш новый компактный горизонтальный ряд */
+.inputRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* Расстояние между инпутом и кнопкой */
+  width: 100%;
+  max-width: 400px; /* Ограничили общую ширину блока, чтоб не растягивался */
+}
+
+/* Компактный неоновый инпут */
+.input {
+  flex: 1; /* Инпут забирает всё основное место в ряду */
+  background: #222222;
+  color: #ffffff;
+  border: 2px solid rgba(0, 243, 255, 0.4);
+  border-radius: 12px 4px 12px 4px;
+  padding: 10px 15px; /* Слегка уменьшили отступы */
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.1);
+  min-width: 0; /* Фикс, чтобы инпут не ломал флексы */
+}
+
+.input:focus {
+  border-color: #00f3ff;
+  box-shadow:
+    0 0 20px rgba(0, 243, 255, 0.5),
+    inset 0 0 8px rgba(0, 243, 255, 0.2);
+  transform: scale(1.02);
+}
+
+/* Наша компактная дышащая кнопочка "Ввести" */
+.submitBtn {
+  position: static !important;
+  width: 100px !important; /* Сделали её аккуратной и узкой */
+  height: 41px !important; /* Идеально подогнали под высоту инпута */
+  font-size: 14px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Мигающий заголовок */
+.title {
+  color: #ff3333;
+  animation: blinker 1s linear infinite;
+  font-size: 18px;
+  margin: 0 0 5px 0;
+  text-align: center;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}

@@ -1,0 +1,297 @@
+/* Главный контейнер всей игры */
+.gameContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  gap: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.leftPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+}
+
+.gameControlsZone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Ограничиваем игровое поле, чтобы оно не растягивалось вширь как на скрине */
+.gameZone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: auto; /* Поле будет строго по размеру сетки! */
+}
+
+.vsText {
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.vsSpan {
+  font-size: 20px;
+  font-weight: bold;
+  color: #aaaaaa;
+  margin: 0 10px;
+}
+
+.playerNameHighlight {
+  font-size: 26px;
+  font-weight: 900;
+  color: #00f3ff;
+  text-shadow: 0 0 10px rgba(0, 243, 255, 0.4);
+}
+
+.matchLiveScore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 0 0 4px 0;
+}
+
+.scoreNum {
+  font-size: 42px;
+  font-weight: 900;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.scoreNum.playerColor {
+  color: #00f3ff;
+  text-shadow: 0 0 15px rgba(0, 243, 255, 0.6);
+}
+
+.scoreNum.compColor {
+  color: #bd00ff;
+  text-shadow: 0 0 15px rgba(189, 0, 255, 0.6);
+}
+
+.scoreDivider {
+  font-size: 36px;
+  color: #555555;
+  font-weight: bold;
+}
+
+.setupRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.controlsRow {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  width: 100%;
+}
+
+.relativeZone {
+  position: relative;
+  display: inline-block; /* Позволяет оверлею победы ложиться точно на сетку */
+}
+
+/* КНОПКА ТАБЛИЦЫ СПЕЦ-КЛАСС */
+.ratingBtnSpec {
+  margin-top: 20px;
+  width: 240px;
+}
+
+/* МОДАЛЬНОЕ ОКНО */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #222222;
+  border: 2px solid #ffeb3b;
+  box-shadow: 0 0 30px rgba(255, 235, 59, 0.3);
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.closeModalBtn {
+  align-self: flex-end;
+  margin-bottom: 15px;
+}
+
+/* ОВЕРЛЕИ ПОБЕДЫ НАД СЕТКОЙ */
+.boardWinnerOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(17, 17, 17, 0.94);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+.overlayText {
+  font-size: 26px;
+  font-weight: 900;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-transform: uppercase;
+}
+
+.boardWinnerOverlay.overlayPlayer {
+  border: 3px solid #00ff66;
+  box-shadow: 0 0 30px rgba(0, 255, 102, 0.4);
+}
+.boardWinnerOverlay.overlayPlayer .overlayText {
+  color: #00f3ff;
+  text-shadow: 0 0 15px rgba(0, 243, 255, 0.8);
+}
+
+.boardWinnerOverlay.overlayComp {
+  border: 3px solid #ff3333;
+  box-shadow: 0 0 30px rgba(255, 51, 51, 0.4);
+}
+.boardWinnerOverlay.overlayComp .overlayText {
+  color: #ff3333;
+  text-shadow: 0 0 15px rgba(255, 51, 51, 0.8);
+}
+
+.boardWinnerOverlay.overlayDraw {
+  border: 3px solid #ffeb3b;
+  box-shadow: 0 0 30px rgba(255, 235, 93, 0.3);
+}
+.boardWinnerOverlay.overlayDraw .overlayText {
+  color: #ffeb3b;
+  text-shadow: 0 0 15px rgba(255, 235, 93, 0.8);
+}
+
+.clickToResetHint {
+  font-size: 13px;
+  color: #888888;
+  font-weight: normal;
+  text-transform: none;
+  margin-top: 5px;
+}
+
+/* Наша крутая интерактивная вывеска противника */
+.vsRowBtn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 22px;
+  font-weight: 900;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  animation: badgeBreath 2s infinite ease-in-out;
+}
+
+/* Боевой Кибер-фиолетовый неон для Вумного */
+.vsRowBtn.aiSmart {
+  color: #bd00ff;
+  border-color: rgba(189, 0, 255, 0.4);
+  box-shadow:
+    0 0 12px rgba(189, 0, 255, 0.2),
+    inset 0 0 6px rgba(189, 0, 255, 0.1);
+}
+.vsRowBtn.aiSmart:not(:disabled):hover {
+  transform: scale(1.05);
+  background: rgba(189, 0, 255, 0.15);
+  border-color: #bd00ff;
+  box-shadow: 0 0 25px rgba(189, 0, 255, 0.6);
+}
+
+/* Оранжевый неон для Дурика */
+.vsRowBtn.aiDumb {
+  color: #ff9800;
+  border-color: rgba(255, 152, 0, 0.4);
+  box-shadow:
+    0 0 12px rgba(255, 152, 0, 0.2),
+    inset 0 0 6px rgba(255, 152, 0, 0.1);
+}
+.vsRowBtn.aiDumb:not(:disabled):hover {
+  transform: scale(1.05);
+  background: rgba(255, 152, 0, 0.15);
+  border-color: #ff9800;
+  box-shadow: 0 0 25px rgba(255, 152, 0, 0.6);
+}
+
+@keyframes badgeBreath {
+  0%,
+  100% {
+    transform: scale(1);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    transform: scale(1.03);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.vsRowBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  animation: none;
+  box-shadow: none;
+}
+
+/* Наш компактный таймер справа от кнопки выбора хода */
+.countdownTimerInline {
+  font-size: 32px;
+  font-weight: 900;
+  color: #ff0055;
+  text-shadow: 0 0 15px rgba(255, 0, 85, 0.8);
+  font-family: "Courier New", Courier, monospace;
+  padding: 4px 12px;
+  background: rgba(255, 0, 85, 0.05);
+  border: 1px solid rgba(255, 0, 85, 0.3);
+  border-radius: 6px;
+  animation: timerBlink 1s infinite steps(1);
+}
+
+@keyframes timerBlink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

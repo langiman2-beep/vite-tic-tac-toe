@@ -1,0 +1,72 @@
+.setupPanel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Базовый устав для живой кнопки выбора первого хода */
+.turnToggleBtn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 900;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  animation: turnButtonBreath 2.5s infinite ease-in-out;
+}
+
+/* Если первый ход наш — горит благородным бирюзовым неоном */
+.turnToggleBtn.turnPlayer {
+  color: #00f3ff;
+  border-color: rgba(0, 243, 255, 0.4);
+  box-shadow:
+    0 0 12px rgba(0, 243, 255, 0.2),
+    inset 0 0 6px rgba(0, 243, 255, 0.1);
+}
+.turnToggleBtn.turnPlayer:not(:disabled):hover {
+  transform: scale(1.05);
+  background: rgba(0, 243, 255, 0.15);
+  border-color: #00f3ff;
+  box-shadow: 0 0 25px rgba(0, 243, 255, 0.6);
+}
+
+/* Если первый ход машины — горит агрессивным кибер-красным неоном */
+.turnToggleBtn.turnComp {
+  color: #ff0055;
+  border-color: rgba(255, 0, 85, 0.4);
+  box-shadow:
+    0 0 12px rgba(255, 0, 85, 0.2),
+    inset 0 0 6px rgba(255, 0, 85, 0.1);
+}
+.turnToggleBtn.turnComp:not(:disabled):hover {
+  transform: scale(1.05);
+  background: rgba(255, 0, 85, 0.15);
+  border-color: #ff0055;
+  box-shadow: 0 0 25px rgba(255, 0, 85, 0.6);
+}
+
+@keyframes turnButtonBreath {
+  0%,
+  100% {
+    transform: scale(1);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    transform: scale(1.03);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.turnToggleBtn:disabled {
+  opacity: 0.4;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+  animation: none;
+  transform: none;
+  background: rgba(255, 255, 255, 0.02);
+  cursor: not-allowed;
+}
