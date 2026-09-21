@@ -4,10 +4,21 @@ import SetupPanel from "./SetupPanel";
 import ScoreTable from "./ScoreTable";
 import GameBoard from "./GameBoard";
 import Button from "../../ui/Button";
+import SoundButton from "../../ui/SoundButton";
 import { calculateWinner } from "../../helpers.ts";
 import { getComputerMove } from "./aiLogic";
 import { handleTimerTick } from "./timerLogic";
 import { processCellClick } from "./gameLogic";
+import {
+  startBackgroundMusic,
+  stopBackgroundMusic,
+  playCellClick,
+  playAiClick,
+  playMenuClick,
+  playTableClick, // Добавили импорт звука таблицы!
+  playWinSound,
+  playLoseSound,
+} from "../../audioLogic";
 import styles from "./Hrestiki.module.css";
 
 interface PlayerScore {
@@ -45,15 +56,30 @@ function Hrestiki() {
   }>({ player: 0, comp: 0 });
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  // Стейты управления звуком (по умолчанию всё ВКЛЮЧЕНО)
+  const [isMusicOn, setIsMusicOn] = useState<boolean>(true);
+  const [isSfxOn, setIsSfxOn] = useState<boolean>(true);
+
+  // Профессиональный запуск фоновой музыки: строго при наличии имени и включенном тумблере
+  useEffect(() => {
+    if (isMusicOn && playerName) {
+      startBackgroundMusic();
+    } else {
+      stopBackgroundMusic();
+    }
+  }, [isMusicOn, playerName]);
+
   const handleNameSubmit = (enteredName: string) => {
+    playMenuClick(!isSfxOn); // Издаём сочный клик при вводе
     setPlayerName(enteredName);
     localStorage.setItem("hrestiki_name", enteredName);
   };
 
   const handleClick = useCallback(
     (index: number) => {
-      // При каждом успешном клике и переходе хода — сбрасываем время на 5 секунд вперёд!
+      playCellClick(!isSfxOn);
       setTimeLeft(5);
+
       processCellClick({
         index,
         board,
@@ -69,10 +95,10 @@ function Hrestiki() {
         setXIsNext,
       });
     },
-    [board, gameStarted, xIsNext, playerName, score],
+    [board, gameStarted, xIsNext, playerName, score, isSfxOn],
   );
 
-  // 1. Таймер обратного отсчета — теперь идеально чистый и безопасный для линтера
+  // 1. Таймер обратного отсчета
   useEffect(() => {
     if (!gameStarted || !xIsNext) return;
 
@@ -89,6 +115,7 @@ function Hrestiki() {
         );
 
         if (nextTime === 0 && prev <= 1) {
+          playLoseSound(!isSfxOn);
           setMatchScore((m) => ({ ...m, comp: m.comp + 1 }));
         }
         return nextTime;
@@ -96,7 +123,7 @@ function Hrestiki() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [gameStarted, xIsNext, score, playerName]);
+  }, [gameStarted, xIsNext, score, playerName, isSfxOn]);
 
   // 2. Мозги ИИ
   useEffect(() => {
@@ -113,6 +140,7 @@ function Hrestiki() {
   }, [gameStarted, xIsNext, board, smartAI, handleClick]);
 
   const handleStop = () => {
+    playMenuClick(!isSfxOn);
     setPlayerName("");
     setGameStarted(false);
     setWinnerMessage("");
@@ -122,8 +150,9 @@ function Hrestiki() {
   };
 
   const toggleFirstMove = () => {
+    playMenuClick(!isSfxOn);
     setXIsNext(!xIsNext);
-    setTimeLeft(5); // Сбрасываем время при ручном переключении первого хода
+    setTimeLeft(5);
   };
 
   const isDraw =
@@ -145,7 +174,10 @@ function Hrestiki() {
           />
           <Button
             variant="table"
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              playTableClick(!isSfxOn); // Теперь здесь играет именно ТВОЙ файл table.mp3!
+              setIsModalOpen(true);
+            }}
             className={styles.ratingBtnSpec}
           >
             🏆 Турнірна Таблиця
@@ -160,14 +192,28 @@ function Hrestiki() {
             <span className={styles.vsSpan}> VS </span>
             <button
               disabled={gameStarted}
-              onClick={() => setSmartAI(!smartAI)}
+              onClick={() => {
+                playAiClick(!isSfxOn);
+                setSmartAI(!smartAI);
+              }}
               className={`${styles.vsRowBtn} ${smartAI ? styles.aiSmart : styles.aiDumb}`}
             >
               {smartAI ? "Вумний" : "Дурик"}
             </button>
           </p>
 
-          <div className={styles.matchLiveScore}>
+          <div
+            className={styles.matchLiveScore}
+            style={{ display: "flex", alignItems: "center", gap: "20px" }}
+          >
+            <SoundButton
+              isActive={isMusicOn}
+              onClick={() => setIsMusicOn(!isMusicOn)}
+              title="Музика"
+            >
+              🎵
+            </SoundButton>
+
             <span className={`${styles.scoreNum} ${styles.playerColor}`}>
               {matchScore.player}
             </span>
@@ -175,6 +221,14 @@ function Hrestiki() {
             <span className={`${styles.scoreNum} ${styles.compColor}`}>
               {matchScore.comp}
             </span>
+
+            <SoundButton
+              isActive={isSfxOn}
+              onClick={() => setIsSfxOn(!isSfxOn)}
+              title="Ефекти"
+            >
+              🔊
+            </SoundButton>
           </div>
 
           <div className={styles.setupRow}>
@@ -193,9 +247,10 @@ function Hrestiki() {
               variant="start"
               disabled={gameStarted}
               onClick={() => {
+                playMenuClick(!isSfxOn);
                 setBoard(Array(9).fill(null));
                 setWinnerMessage("");
-                setTimeLeft(5); // Честно возвращаем 5 секунд при нажатии "Старт"
+                setTimeLeft(5);
                 setGameStarted(true);
                 if (!xIsNext) {
                   setXIsNext(false);
@@ -223,13 +278,17 @@ function Hrestiki() {
             className={`${styles.boardWinnerOverlay} ${overlayClass}`}
             onClick={() => {
               if (winnerMessage === "Комп'ютер") {
+                playLoseSound(!isSfxOn);
                 setMatchScore((prev) => ({ ...prev, comp: prev.comp + 1 }));
               } else if (winnerMessage === playerName) {
+                playWinSound(!isSfxOn);
                 setMatchScore((prev) => ({ ...prev, player: prev.player + 1 }));
+              } else {
+                playMenuClick(!isSfxOn);
               }
               setWinnerMessage("");
               setBoard(Array(9).fill(null));
-              setTimeLeft(5); // Сбрасываем время для нового раунда
+              setTimeLeft(5);
             }}
           >
             <div className={styles.overlayText}>
@@ -261,6 +320,7 @@ function Hrestiki() {
             <ScoreTable
               score={score}
               onFullReset={() => {
+                playMenuClick(!isSfxOn);
                 localStorage.removeItem("hrestiki_score");
                 setScore([]);
               }}

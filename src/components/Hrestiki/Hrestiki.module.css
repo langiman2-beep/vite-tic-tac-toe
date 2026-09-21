@@ -295,3 +295,34 @@
     opacity: 0.5;
   }
 }
+/* 
+   МОБИЛЬНАЯ АДАПТАЦИЯ ИНТЕРФЕЙСА (ЭКРАНЫ МЕНЬШЕ 480 ПИКСЕЛЕЙ)
+    */
+@media (max-width: 480px) {
+  /* Сжимаем общие отступы игры, чтобы на смартфонах всё поднялось повыше */
+  .gameContainer {
+    padding: 10px;
+    gap: 12px;
+  }
+
+  /* Текст "Имя VS ИИ" делаем чуть компактнее */
+  .playerNameHighlight {
+    font-size: 20px;
+  }
+  .vsSpan {
+    font-size: 16px;
+  }
+
+  /* Ряд кнопок Старт и Стоп выстраиваем в один компактный столбик */
+  .controlsRow {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  /* Управленческая кнопка таблицы рекордов становится на весь экран мобилки */
+  .ratingBtnSpec {
+    width: 100% !important;
+    margin-top: 10px;
+  }
+}

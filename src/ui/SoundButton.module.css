@@ -1,0 +1,35 @@
+/* Универсальная круглая кнопка звука */
+.soundBtn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%; /* Делает её идеально круглой */
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: #222222;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease-in-out;
+}
+
+/* Цвет, когда звук ВКЛЮЧЕН (Зелёный неон) */
+.soundOn {
+  border-color: #00ff66;
+  color: #00ff66;
+  box-shadow: 0 0 12px rgba(0, 255, 102, 0.4);
+}
+
+/* Цвет, когда звук ВЫКЛЮЧЕН (Красный неон) */
+.soundOff {
+  border-color: #ff0055;
+  color: #ff0055;
+  opacity: 0.6;
+  box-shadow: 0 0 4px rgba(255, 0, 85, 0.2);
+}
+
+/* Мобильный тап */
+.soundBtn:active {
+  transform: scale(0.92);
+}

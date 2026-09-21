@@ -1,7 +1,11 @@
-/* Главный модульный контейнер таблицы */
+/* ==========================================================================
+   БАЗОВЫЕ СТИЛИ ТАБЛИЦЫ (ДЛЯ КОМПЬЮТЕРОВ И ПЛАНШЕТОВ)
+   ========================================================================== */
+
 .container {
   flex: 1;
   min-width: 350px;
+  width: 100%;
 }
 
 .table {
@@ -14,15 +18,16 @@
 .td {
   text-align: center;
   padding: 8px;
+  font-size: 16px;
 }
 
-/* Блок заголовка */
 .headerBlock {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 15px;
   margin-bottom: 15px;
+  width: 100%;
 }
 
 /* Наша жёлтая неоновая вывеска */
@@ -38,19 +43,7 @@
   animation: titleFlicker 2s infinite alternate;
 }
 
-@keyframes titleFlicker {
-  0%,
-  100% {
-    opacity: 1;
-    box-shadow: 0 0 10px rgba(255, 235, 59, 0.6);
-  }
-  50% {
-    opacity: 0.85;
-    box-shadow: 0 0 4px rgba(255, 235, 59, 0.2);
-  }
-}
-
-/* Маленькая серая кнопочка сброса */
+/* Серая кнопочка сброса */
 .resetBtn {
   background-color: #6c757d;
   color: white;
@@ -64,4 +57,57 @@
 
 .resetBtn:hover {
   background-color: #5a6268;
+}
+
+@keyframes titleFlicker {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(255, 235, 59, 0.6);
+  }
+  50% {
+    opacity: 0.85;
+    box-shadow: 0 0 4px rgba(255, 235, 59, 0.2);
+  }
+}
+
+/* 
+   МОБИЛЬНАЯ АДАПТАЦИЯ (ЭКРАНЫ МЕНЬШЕ 480 ПИКСЕЛЕЙ)
+    */
+@media (max-width: 480px) {
+  .container {
+    min-width: 100%; /* Убираем жёсткую ширину, разворачиваем на весь экран смартфона */
+    padding: 5px;
+  }
+
+  /* Сжимаем отступы между ячейками таблицы, чтоб всё влезло по ширине */
+  .table {
+    border-spacing: 5px 8px;
+  }
+
+  /* Чуток уменьшаем шрифт, чтоб имена не переносились уродливо на три строчки */
+  .th,
+  .td {
+    padding: 6px 4px;
+    font-size: 14px;
+  }
+
+  /* Выстраиваем заголовок и кнопку сброса по центру на мобилках */
+  .headerBlock {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .title {
+    font-size: 16px; /* Чуток меньше вывеску */
+    text-align: center;
+    width: 100%;
+  }
+
+  .resetBtn {
+    width: 100%; /* Кнопка сброса на мобилке становится широкой и удобной для тапа пальцем */
+    padding: 10px;
+    font-size: 14px;
+  }
 }
